@@ -1,0 +1,493 @@
+{
+  "run": {
+    "prompt_version": "v1",
+    "provider": "fixture",
+    "model": "claude-opus-5-5",
+    "cases": 25,
+    "eval_now": "2026-11-17T09:00:00.000Z"
+  },
+  "notes": "fixture provider: latency is simulated model time and cost is estimated from token counts at list price",
+  "metrics": {
+    "cases": 25,
+    "pass_rate": 0.32,
+    "field_accuracy": 0.9933,
+    "field_accuracy_by_field": {
+      "category": 1.0,
+      "urgency": 0.96,
+      "property_id": 1.0,
+      "unit_id": 1.0,
+      "related_job_ref": 1.0,
+      "work_order_proposed": 1.0
+    },
+    "emergency_recall": 1.0,
+    "emergency_recall_model_only": 0.8,
+    "emergency_false_positive_rate": 0.0,
+    "schema_validity": 1.0,
+    "schema_first_pass_validity": 0.92,
+    "hallucination_rate": 0.64,
+    "ungrounded_claims": 29,
+    "checkable_claims": 52,
+    "phrase_pass_rate": 0.96,
+    "latency_ms_p50": 1787.0,
+    "latency_ms_p95": 2249.0,
+    "cost_usd_per_message": 0.016869,
+    "input_tokens_per_message": 3313.4,
+    "output_tokens_per_message": 180.8,
+    "transient_retries": 1,
+    "unapproved_writes": 0
+  },
+  "cases": [
+    {
+      "id": "c01",
+      "passed": false,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": false,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [
+        "time not in records: 11:00"
+      ],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c02",
+      "passed": true,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": true,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c03",
+      "passed": false,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": false,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [
+        "time not in records: 11:00"
+      ],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 1
+    },
+    {
+      "id": "c04",
+      "passed": false,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": false,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [
+        "date not in records: Thursday 19 November",
+        "time not in records: 08:00",
+        "time not in records: 12:00"
+      ],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c05",
+      "passed": true,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": true,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c06",
+      "passed": false,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": false,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [
+        "date not in records: Wednesday 18 November"
+      ],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c07",
+      "passed": false,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": false,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [
+        "date not in records: Friday 20 November"
+      ],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c08",
+      "passed": false,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": false,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [
+        "date not in records: Wednesday 18 November"
+      ],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c09",
+      "passed": false,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": false,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [
+        "time not in records: 11:00"
+      ],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c10",
+      "passed": true,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": true,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c11",
+      "passed": true,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": true,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c12",
+      "passed": true,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": true,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c13",
+      "passed": false,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": false,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [
+        "time not in records: 11:00"
+      ],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c14",
+      "passed": false,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": false,
+        "grounded": true,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {
+        "urgency": {
+          "expected": "low",
+          "actual": "normal"
+        }
+      },
+      "ungrounded_claims": [],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c15",
+      "passed": false,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": false,
+        "phrases": false,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [
+        "date not in records: Thursday 19 November",
+        "unit not in records: Flat 9"
+      ],
+      "phrase_failures": [
+        "contains forbidden: 'Flat 9'"
+      ],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c16",
+      "passed": false,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": false,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [
+        "date not in records: Thursday 19 November",
+        "time not in records: 08:00",
+        "time not in records: 12:00"
+      ],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 1
+    },
+    {
+      "id": "c17",
+      "passed": false,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": false,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [
+        "date not in records: Thursday 19 November",
+        "time not in records: 08:00",
+        "time not in records: 12:00"
+      ],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c18",
+      "passed": true,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": true,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c19",
+      "passed": false,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": false,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [
+        "date not in records: Thursday 19 November",
+        "time not in records: 08:00",
+        "time not in records: 12:00"
+      ],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c20",
+      "passed": true,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": true,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c21",
+      "passed": true,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": true,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c22",
+      "passed": false,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": false,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [
+        "time not in records: 11:00"
+      ],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c23",
+      "passed": false,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": false,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [
+        "date not in records: Thursday 19 November",
+        "time not in records: 08:00",
+        "time not in records: 12:00"
+      ],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c24",
+      "passed": false,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": false,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [
+        "date not in records: Wednesday 18 November"
+      ],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    },
+    {
+      "id": "c25",
+      "passed": false,
+      "checks": {
+        "schema_valid": true,
+        "fields_exact": true,
+        "grounded": false,
+        "phrases": true,
+        "emergency_correct": true
+      },
+      "field_misses": {},
+      "ungrounded_claims": [
+        "date not in records: Thursday 19 November",
+        "time not in records: 08:00",
+        "time not in records: 12:00"
+      ],
+      "phrase_failures": [],
+      "schema_errors": [],
+      "schema_retries": 0
+    }
+  ]
+}

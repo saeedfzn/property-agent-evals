@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Property Agent Evals</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%232f5fd0'/%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E">
+<meta name="description" content="Eval dashboard for a property-management triage agent: v1 vs v2 prompt, fixture provider.">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f7f7f5; --surface: #ffffff; --ink: #1c1d1f; --ink-2: #4a4d52; --muted: #5f636a;
+    --line: #e2e3e0; --accent: #2f5fd0; --good: #1a6b3c; --bad: #b3261e; --chip: #eef1f8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141517; --surface: #1d1f22; --ink: #ececea; --ink-2: #c2c4c8; --muted: #9a9ea5;
+      --line: #33363b; --accent: #8fb0ff; --good: #6fd39a; --bad: #ff8a80; --chip: #262a33;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #141517; --surface: #1d1f22; --ink: #ececea; --ink-2: #c2c4c8; --muted: #9a9ea5;
+    --line: #33363b; --accent: #8fb0ff; --good: #6fd39a; --bad: #ff8a80; --chip: #262a33;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 960px; margin: 0 auto; padding: 32px 16px 48px; }
+  h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.2; margin: 0 0 8px; letter-spacing: -0.01em; }
+  h2 { font-size: 1.15rem; margin: 40px 0 12px; }
+  p { margin: 0 0 12px; color: var(--ink-2); max-width: 70ch; }
+  a { color: var(--accent); }
+  a:focus-visible, .table-wrap:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .skip { position: absolute; left: -9999px; }
+  .skip:focus { left: 16px; top: 8px; background: var(--surface); padding: 6px 10px; border-radius: 6px; z-index: 1; }
+  .note { font-size: 0.9rem; color: var(--muted); border-left: 3px solid var(--line); padding-left: 12px; }
+  .note strong { color: var(--ink-2); }
+  ul.plain { margin: 0 0 12px; padding-left: 20px; color: var(--ink-2); max-width: 70ch; }
+  ul.plain li { margin-bottom: 6px; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 20px; }
+  .tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; min-width: 0; }
+  .tile .label { font-size: 0.85rem; color: var(--muted); }
+  .tile .value { font-size: 1.5rem; font-weight: 650; font-variant-numeric: tabular-nums; margin: 4px 0 2px; }
+  .tile .sub { font-size: 0.85rem; color: var(--ink-2); }
+  .table-wrap { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  caption { text-align: left; padding: 12px 14px 0; color: var(--muted); font-size: 0.85rem; }
+  th, td { padding: 9px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tr:last-child td { border-bottom: 0; }
+  thead th { font-weight: 600; color: var(--ink-2); }
+  .status { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--chip); }
+  .status.pass { color: var(--good); } .status.fail { color: var(--bad); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; padding: 0; list-style: none; }
+  .chips li { background: var(--chip); border-radius: 999px; padding: 2px 10px; font-size: 0.85rem; color: var(--ink-2); }
+  code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 0.88em; overflow-wrap: anywhere; }
+  @media (max-width: 420px) { th, td { padding: 8px 8px; } table { font-size: 0.86rem; } caption { padding: 10px 8px 0; } }
+  footer { margin-top: 48px; font-size: 0.88rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<a class="skip" href="#h-headline">Skip to results</a>
+<main>
+  <header>
+    <h1>Property agent evals</h1>
+    <p>A property-management triage agent in TypeScript, Node.js and PostgreSQL, with sub-agents, tool calling and zod-validated structured outputs. A Python eval harness grades it. This page reads the committed eval reports for two prompt versions.</p>
+    <ul class="chips" aria-label="Stack">
+      <li>TypeScript</li><li>Node.js</li><li>PostgreSQL (PGlite)</li><li>Python</li><li>zod</li><li>Anthropic SDK</li><li>GitHub Actions</li>
+    </ul>
+    <p class="note" style="margin-top:16px"><strong>What is simulated:</strong> the model. These numbers come from a scripted, deterministic <strong>fixture provider</strong>, so latency is simulated and cost is estimated from token counts at list price. The v1 to v2 improvement is scripted too: the fixture invents an appointment when its prompt tells it to promise one. <strong>What is real:</strong> the orchestration, tool calls against PostgreSQL, validation and retries, tracing, the graders and the CI gate all execute on every run. The numbers show that the graders catch invented facts and that the gate blocks the build; they are not a benchmark of a live model. All data is fictional.</p>
+  </header>
+
+  <section aria-labelledby="h-headline">
+    <h2 id="h-headline">The fix, measured</h2>
+    <div class="tiles" id="tiles"><p>Loading reports…</p></div>
+  </section>
+
+  <section aria-labelledby="h-table">
+    <h2 id="h-table">Every metric, v1 vs v2</h2>
+    <div class="table-wrap" tabindex="0" role="region" aria-labelledby="h-table">
+      <table id="metrics">
+        <caption>25 golden messages. Thresholds are from <code>evals/thresholds.json</code>.</caption>
+        <thead><tr><th scope="col">Metric</th><th scope="col" class="num">v1</th><th scope="col" class="num">v2</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-fail">
+    <h2 id="h-fail">Why v1 fails</h2>
+    <p>The v1 drafting prompt says to "always tell the resident when they can expect a visit". For messages where nothing is booked, the reply invents a date or time. The grader parses each date, time, flat number, job reference and £ amount from the reply text and checks it against the database, scoped by the golden case:</p>
+    <ul class="plain">
+      <li>to the true flat, so a real booking for another flat does not count;</li>
+      <li>to the one job the message is about, so a different job booked on the same flat that day does not make an invented visit true;</li>
+      <li>to the kind of question, so a rent due date cannot stand in for a visit date.</li>
+    </ul>
+    <div class="table-wrap" tabindex="0" role="region" aria-labelledby="h-fail">
+      <table id="failing">
+        <caption>v1 cases with ungrounded claims</caption>
+        <thead><tr><th scope="col">Case</th><th scope="col">Ungrounded claims found by the grader</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-code">
+    <h2 id="h-code">Rules the model cannot override</h2>
+    <ul class="plain">
+      <li><strong>Emergencies.</strong> Deterministic rules run on the raw message. The model can raise urgency but never lower it, and the safety wording is a fixed template.</li>
+      <li><strong>Account data.</strong> The lease, rent and job tools refuse any flat the sender is not the resident or landlord of, so another household's data reaches neither the model nor the reply, whatever flat the message names.</li>
+      <li><strong>Writes.</strong> The agent only proposes a work order. A named human approves it, and a full run of the golden set writes no rows.</li>
+      <li><strong>Outages.</strong> If a model call fails after its retries, the message goes to a human with a holding reply. A gas message still gets its emergency verdict and safety wording.</li>
+    </ul>
+  </section>
+
+  <footer>
+    Source: <a href="https://github.com/saeedfzn/property-agent-evals">github.com/saeedfzn/property-agent-evals</a> ·
+    Built by Faizaan Saeed · <a href="https://saeedfzn.github.io">saeedfzn.github.io</a>
+  </footer>
+</main>
+<noscript><p style="max-width:960px;margin:0 auto;padding:0 16px 32px">This page reads the eval reports with JavaScript. The same numbers are in the README of the repository.</p></noscript>
+<script>
+(async function () {
+  const pct = (x) => (x * 100).toFixed(1) + "%";
+  const usd = (x) => "$" + x.toFixed(4);
+  const ms = (x) => Math.round(x) + " ms";
+  const el = (tag, attrs, text) => { const e = document.createElement(tag); Object.assign(e, attrs || {}); if (text !== undefined) e.textContent = text; return e; };
+  try {
+    const [v1, v2, thresholds] = await Promise.all(["evals/reports/v1.json", "evals/reports/v2.json", "evals/thresholds.json"].map((u) => fetch(u).then((r) => { if (!r.ok) throw new Error(u); return r.json(); })));
+    const a = v1.metrics, b = v2.metrics;
+
+    const tiles = document.getElementById("tiles");
+    tiles.textContent = "";
+    const tile = (label, value, sub) => {
+      const t = el("div", { className: "tile" });
+      t.append(el("div", { className: "label" }, label), el("div", { className: "value" }, value), el("div", { className: "sub" }, sub));
+      tiles.append(t);
+    };
+    tile("Hallucination rate", pct(a.hallucination_rate) + " → " + pct(b.hallucination_rate), a.ungrounded_claims + " ungrounded claims in v1, " + b.ungrounded_claims + " in v2");
+    tile("Emergency recall", pct(b.emergency_recall), "model alone: " + pct(b.emergency_recall_model_only) + "; code rules catch the rest");
+    tile("Structured output valid", pct(b.schema_validity), "first try " + pct(b.schema_first_pass_validity) + "; reject and retry once");
+    tile("Cases passing every check", pct(a.pass_rate) + " → " + pct(b.pass_rate), "work orders written without approval: " + b.unapproved_writes);
+
+    const rows = [
+      ["Emergency recall (final)", "emergency_recall", pct],
+      ["Emergency recall (model alone)", "emergency_recall_model_only", pct],
+      ["Emergency false positives", "emergency_false_positive_rate", pct],
+      ["Field accuracy", "field_accuracy", pct],
+      ["Output validity, first try", "schema_first_pass_validity", pct],
+      ["Output validity, after retry", "schema_validity", pct],
+      ["Hallucination rate", "hallucination_rate", pct],
+      ["Must-say / must-not-say", "phrase_pass_rate", pct],
+      ["Latency p50", "latency_ms_p50", ms],
+      ["Latency p95", "latency_ms_p95", ms],
+      ["Est. cost per message", "cost_usd_per_message", usd],
+      ["Unapproved writes", "unapproved_writes", String],
+    ];
+    const tbody = document.querySelector("#metrics tbody");
+    for (const [label, key, f] of rows) {
+      const tr = el("tr");
+      tr.append(el("th", { scope: "row" }, label), el("td", { className: "num" }, f(a[key])), el("td", { className: "num" }, f(b[key])));
+      tbody.append(tr);
+    }
+    // Same rule as evals/harness/gate.py: every min/max in thresholds.json must hold.
+    const gate = (m) => Object.entries(thresholds).filter(([k]) => !k.startsWith("_"))
+      .every(([k, t]) => (t.min === undefined || m[k] >= t.min) && (t.max === undefined || m[k] <= t.max));
+    const tr = el("tr");
+    const cell = (ok) => { const td = el("td", { className: "num" }); td.append(el("span", { className: "status " + (ok ? "pass" : "fail") }, (ok ? "✓ " : "✕ ") + (ok ? "passes" : "fails"))); return td; };
+    tr.append(el("th", { scope: "row" }, "CI gate"), cell(gate(a)), cell(gate(b)));
+    tbody.append(tr);
+
+    const fb = document.querySelector("#failing tbody");
+    for (const c of v1.cases.filter((c) => c.ungrounded_claims.length)) {
+      const r = el("tr");
+      r.append(el("td", {}, c.id), el("td", {}, c.ungrounded_claims.join("; ")));
+      fb.append(r);
+    }
+  } catch (err) {
+    document.getElementById("tiles").textContent = "Could not load the eval reports (" + err.message + "). Serve this folder over HTTP, e.g. python -m http.server.";
+  }
+})();
+</script>
+</body>
+</html>

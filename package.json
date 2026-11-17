@@ -1,0 +1,31 @@
+{
+  "name": "property-agent-evals",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Property-management triage agent (TypeScript, PostgreSQL via PGlite) with a Python evaluation harness and CI quality gate.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "triage": "tsx src/cli.ts",
+    "eval:run": "tsx src/run-eval.ts",
+    "eval": "node scripts/eval.mjs",
+    "demo": "node scripts/eval.mjs --all"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "1.4.0",
+    "@electric-sql/pglite": "0.5.15",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vitest": "5.1.0"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "_comment": "CI fails if the current prompt's report breaks any of these. Emergency recall is non-negotiable.",
+  "emergency_recall": { "min": 1.0 },
+  "emergency_false_positive_rate": { "max": 0.05 },
+  "field_accuracy": { "min": 0.95 },
+  "schema_validity": { "min": 1.0 },
+  "hallucination_rate": { "max": 0.0 },
+  "phrase_pass_rate": { "min": 0.95 },
+  "unapproved_writes": { "max": 0 },
+  "latency_ms_p95": { "max": 5000 },
+  "cost_usd_per_message": { "max": 0.05 }
+}
